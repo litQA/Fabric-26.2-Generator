@@ -1,3 +1,5 @@
+<img width="1000" alt="fabric generator banner 26 2" src="https://github.com/user-attachments/assets/4ad50210-dcb5-4905-bcb6-21f03d3ad47d" />
+
 # Fabric Generator 26.2
 
 Fabric generator plugin for MCreator 2026.3, targeting Minecraft 26.2.
