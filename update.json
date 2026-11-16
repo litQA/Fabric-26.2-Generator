@@ -1,0 +1,12 @@
+{
+  "generator-fabric-26.2": {
+    "latest": "2026.3-2.11.1.1-beta",
+    "changes": [
+      "2026.3-2.11.1.1-beta",
+      "Initial Fabric generator for Minecraft 26.2 on MCreator 2026.3",
+      "Uses Fabric Loader 0.20.1 and Fabric API 0.160.0+26.2",
+      "Adapted 2026.3 element, procedure and trigger support to the Minecraft 26.2 API",
+      "Added 26.2 brewing, feature registration and client rendering fixes"
+    ]
+  }
+}

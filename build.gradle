@@ -1,0 +1,119 @@
+import java.nio.file.Files
+
+plugins {
+    id "java"
+    id "idea"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+// MCreator's build script configures idea.project, which only exists on the root project. As MCreator is included
+// here as a subproject, share this root project's IDEA project model with it so its configuration does not fail
+if(mcreator_path != "unassigned") {
+    project(':MCreator').plugins.withType(IdeaPlugin).configureEach { ideaPlugin ->
+        ideaPlugin.model.project = rootProject.idea.project
+    }
+}
+
+tasks.named('processResources') {
+    filesMatching('plugin.json') {
+        expand(
+                mcVersion: mcVersion,
+                mcreatorVersion: mcreatorVersion,
+                pluginVersion: pluginVersion,
+                supportedVersion: {
+                    def p = mcreatorVersion.split("\\.")
+                    def majorlong = p[0] + p[1].padLeft(3, '0')
+
+                    if (p.length == 2)
+                        return majorlong
+
+                    return majorlong + p[2]
+                }() // Example: 2026.2 → 2026002, 2026.2.33218 → 202600233218
+        )
+    }
+}
+
+tasks.jar {
+    archiveFileName.set(Globals.getArchiveName())
+}
+
+class Globals {
+    private static final def ARCHIVE_NAME = "generator-fabric-26.2" // The name of the exported file
+
+    static def getArchiveName() {
+        return ARCHIVE_NAME + ".zip"
+    }
+
+    static String getOSName() {
+        return System.getProperty("os.name").toLowerCase()
+    }
+
+    static String getUserHome() {
+        return System.getProperty("user.home") //user.name is the name of the pc, not the name of the directory
+    }
+}
+
+// workaround for IDEA-265203
+System.setProperty("user.dir", projectDir.toString())
+
+tasks.register('copyLibs', Copy) {
+    dependsOn(jar)
+
+    from("build/libs")
+    into("build")
+}
+
+tasks.register('exportPlugin', Zip) {
+    dependsOn(processResources, jar, tasks.named('copyLibs'))
+
+    group("mcreator_plugins")
+}
+
+tasks.register('install') {
+    dependsOn exportPlugin
+    group("mcreator_plugins")
+    doLast {
+        println("Installing plugin...")
+        if (Globals.getOSName().contains('mac') || Globals.getOSName().contains('OS X') || Globals.getOSName().contains('linux')) {
+            installPlugin("${Globals.getUserHome()}/.mcreator/plugins/", "/")
+        } else if (Globals.getOSName().contains('windows')) {
+            installPlugin("${Globals.getUserHome()}\\.mcreator\\plugins\\", "\\")
+        }
+    }
+}
+
+static def installPlugin(String path, String separator) {
+    File des = new File(path + Globals.getArchiveName())
+    File original = new File("${System.getProperty("user.dir")}${separator}build${separator}${Globals.getArchiveName()}")
+    if (des.exists()) {
+        des.delete()
+    }
+    try {
+        FileOutputStream os = new FileOutputStream(des)
+        Files.copy(original.toPath(), os)
+        println("Plugin successfully installed to $path")
+    } catch (IOException e) {
+        e.printStackTrace()
+        throw new RuntimeException("Could not install plugin!")
+    }
+}
+
+subprojects { subproject ->
+    subproject.plugins.withType(JavaPlugin).tap {
+        configureEach {
+            test {
+                useJUnitPlatform()
+                include '**/GeneratorsTest.class'
+
+                dependsOn rootProject.processResources
+                dependsOn rootProject.jar
+
+                environment("MCREATOR_PLUGINS_FOLDER", new File(rootProject.projectDir, "/build/libs"))
+                environment("MCREATOR_TEST_GENERATORS", "fabric-${mcVersion}")
+
+                workingDir = mcreator_path
+            }
+        }
+    }
+}
