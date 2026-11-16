@@ -139,7 +139,8 @@ public class ${JavaModName}Items {
 	// End of user code block custom items
 
 	private static <I extends Item> I register(String name, Function<Item.Properties, ? extends I> supplier) {
-		return (I) Items.registerItem(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name)), (Function<Item.Properties, Item>) supplier);
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name));
+		return (I) net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.ITEM, key, supplier.apply(new Item.Properties().setId(key)));
 	}
 
 	<#if hasBlocks>
@@ -148,7 +149,8 @@ public class ${JavaModName}Items {
 	}
 
 	private static Item block(Block block, String name, Item.Properties properties) {
-		return Items.registerItem(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name)), prop -> new BlockItem(block, prop), properties);
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name));
+		return net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.ITEM, key, new BlockItem(block, properties.setId(key)));
 	}
 	</#if>
 
@@ -158,7 +160,8 @@ public class ${JavaModName}Items {
 	}
 
 	private static Item doubleBlock(Block block, String name, Item.Properties properties) {
-		return Items.registerItem(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name)), prop -> new DoubleHighBlockItem(block, prop), properties);
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name));
+		return net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.ITEM, key, new DoubleHighBlockItem(block, properties.setId(key)));
 	}
 	</#if>
 
@@ -168,7 +171,8 @@ public class ${JavaModName}Items {
 	}
 
 	private static Item signBlock(Block block, String name, Block wallBlock, Item.Properties properties) {
-		return Items.registerItem(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name)), prop -> new SignItem(block, wallBlock, prop), properties);
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name));
+		return net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.ITEM, key, new SignItem(block, wallBlock, properties.setId(key)));
 	}
 	</#if>
 
@@ -178,7 +182,8 @@ public class ${JavaModName}Items {
 	}
 
 	private static Item hangingSignBlock(Block block, String name, Block wallBlock, Item.Properties properties) {
-		return Items.registerItem(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name)), prop -> new HangingSignItem(block, wallBlock, prop), properties);
+		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, name));
+		return net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.ITEM, key, new HangingSignItem(block, wallBlock, properties.setId(key)));
 	}
 	</#if>
 }

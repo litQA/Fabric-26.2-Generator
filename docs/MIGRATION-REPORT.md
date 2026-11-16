@@ -4,8 +4,9 @@
 
 | Item | Value |
 | --- | --- |
+| Baseline MCreator | 2026.3 (Fabric-Generator-MCreator-26.3-2026.3-2.10.1) |
 | Target MCreator | 2026.3.44621 |
-| Plugin version | 2026.3-2.11.2.2-beta |
+| Plugin version | 2026.3-2.11.3 |
 | Target Minecraft | 26.2 |
 | Fabric Loader | 0.20.1 |
 | Fabric API | 0.160.0+26.2 |
@@ -24,6 +25,8 @@ The generator embeds two private bases:
 - `fabric-26.2-base/neoforge`
 
 Only the main `fabric-26.2` generator carries element definitions and `generator.yaml`; the embedded bases contribute templates, mappings, Blockly folders and workspace support files.
+
+Because the upstream Fabric 2026.3 generator already targets the same MCreator line, the forced `new_features_from_2021.md` interval is empty: entries for 2026.3 and earlier are baseline-covered and excluded from this migration's mandatory feature mapping. The table below still compares the 2026.3 features called out by the project specification and records their Fabric status.
 
 ## Feature Applicability
 
@@ -54,7 +57,9 @@ Only the main `fabric-26.2` generator carries element definitions and `generator
 | 2026.2 advancement trigger setup | Supported | 2026.3 advancement definitions/templates retained. |
 | 2026.2 armor trims | Supported | 26.2 trim atlas path restored. |
 | 2026.2 skybox/sun/moon | Supported | 26.2 render-pass API used. |
-| 2026.2 block inventory insert/extract | Not available as capability blocks | NeoForge capability procedure blocks are not part of Fabric. |
+| 2026.2 block inventory insert/extract | Supported for vanilla containers | 13 procedure templates cover slot access, count, insert, extract, clear, remove, set, damage and result variants through `Container`/`BlockEntity`; NeoForge item-handler capabilities remain unavailable. |
+| Entity, item and block NBT | Supported | Entity/item values use `DataComponents.CUSTOM_DATA`; block values use a persistent Fabric data attachment. Number, logic, text and item-stack variants are covered. |
+| `player_useitem_finish` trigger | Supported | Added a Fabric `FINISH_USE_ITEM` living-entity event and `completeUsingItem` mixin hook. |
 | 2026.2 special/raft entities and rarity | Supported | 2026.3 element definitions retained. |
 | 2026.2 Blockly enchantment effects | Supported | 2026.3 enchantment effect definitions retained. |
 
@@ -70,17 +75,24 @@ Only the main `fabric-26.2` generator carries element definitions and `generator
 
 ## Verification
 
-- Plugin ZIP builds successfully with Gradle 9.9.1 and Java 25.
-- MCreator integration generation run passes its element, procedure, trigger, feature, enchantment and AI sample tests.
-- A generated sample workspace containing 1,116 Java files compiles and builds successfully.
-- Generated artifact: `modid-1.0.jar`, 3,533,249 bytes.
+- Plugin ZIP builds successfully with Gradle 9.8.0 and Gradle 9.9.1 under Java 25.
+- Freemarker parsing: 1,721 templates, 0 failures.
+- MCreator `GeneratorsTest` passes for `fabric-26.2`, including element, procedure, trigger, feature, enchantment, AI and JSON coverage.
+- Three real MCreator workspaces were regenerated and built with Gradle 9.8.0 and Java 25:
+  - Everrose: 177 elements, build passed.
+  - Melon: 430 elements, build passed.
+  - Croparium: 493 elements, build passed, including the third-party Procedure Renamer post-process.
+- A synthetic procedure covering entity, item and block NBT number/logic/text/item-stack getters and setters compiled successfully.
+- The generated sample workspace used for the isolated generator test compiles and builds. When the third-party Forge Config API Port plugin is also loaded, its standalone `stringlist_iterator` test block is not valid outside the plugin's foreach block; this is a third-party test artifact, not a Fabric generator failure.
 - The client has not yet been launched against a real Minecraft 26.2 instance.
 - Texture-reference validation was skipped in the isolated test environment because it has no vanilla texture cache; this does not indicate a generator failure.
 
 ## Known Limitations
 
-- NeoForge capability systems are intentionally not present. This excludes energy, fluid-tank and item-handler capability procedure blocks.
+- NeoForge capability systems are intentionally not present. This excludes energy, fluid-tank and generic item-handler capability procedure blocks; block inventory is supported only for block entities implementing vanilla `Container`.
+- Block NBT requires a block entity. The persistent data attachment is not available for plain blocks without one.
 - Custom loot tables cannot be injected as NeoForge-style global loot modifiers on Fabric.
 - The piglin-neutral armor mixin behavior is disabled because the required 26.2 item override is absent. Normal `minecraft:piglin_loved` item tagging remains available for the item piglin-currency option.
-- Some procedure/trigger blocks compile but are not covered by the random sample workspace and need real-machine testing.
+- Third-party MCreator plugins (for example Forge Config API Port and Procedure Renamer) provide their own element types and procedure blocks. Their behavior is outside this generator; installed plugins must match the target MCreator line.
+- Some procedure/trigger blocks compile but are not covered by the real workspaces and need real-machine testing.
 - Only Minecraft 26.2 is supported. The same generator must not be used for 26.1.2 or 26.3 workspaces.

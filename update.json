@@ -1,17 +1,18 @@
 {
   "generator-fabric-26.2": {
-    "latest": "2026.3-2.11.2.2-beta",
+    "latest": "2026.3-2.11.3",
     "changes": [
-      "2026.3-2.11.2.2-beta",
-      "Updated target MCreator version to 2026.3.44621",
-      "Moved documentation to docs/ and added a README",
-      "Changed license to CC BY 4.0",
-      "Removed obsolete pluginPageID metadata",
-      "Added automatic installation into the bundled MCreator application",
-      "Initial Fabric generator for Minecraft 26.2 on MCreator 2026.3",
+      "2026.3-2.11.3",
+      "Fixed item registration against the Minecraft 26.2 registry API",
+      "Fixed spurious Models and DispenseBehaviors class references",
+      "Added the player_useitem_finish trigger for procedure blocks",
+      "Added Fabric block-inventory procedure blocks backed by vanilla containers",
+      "Added entity, item and block NBT procedure blocks for Minecraft 26.2",
+      "Fixed empty expressions generated for block-inventory and NBT procedures",
+      "Validated real MCreator workspaces: Everrose, Melon and Croparium now compile",
       "Uses Fabric Loader 0.20.1 and Fabric API 0.160.0+26.2",
       "Adapted 2026.3 element, procedure and trigger support to the Minecraft 26.2 API",
-      "Added 26.2 brewing, feature registration and client rendering fixes"
+      "Updated target MCreator version to 2026.3.44621"
     ]
   }
 }

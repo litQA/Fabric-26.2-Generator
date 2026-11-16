@@ -59,6 +59,14 @@ public abstract class LivingEntityMixin {
 			LivingEntityEvents.START_USE_ITEM.invoker().onStartUseItem(entity, stack);
 	}
 
+	@Inject(require = 0, method = "completeUsingItem()V", at = @At("HEAD"))
+	public void completeUsingItem(CallbackInfo ci) {
+		LivingEntity entity = (LivingEntity) (Object) this;
+		ItemStack stack = entity.getUseItem();
+		if (!stack.isEmpty())
+			LivingEntityEvents.FINISH_USE_ITEM.invoker().onFinishUseItem(entity, stack, stack.getUseDuration(entity));
+	}
+
 	@Inject(require = 0, method = "heal(F)V", at = @At("HEAD"), cancellable = true)
 	public void heal(float amount, CallbackInfo ci) {
 		if (!LivingEntityEvents.ENTITY_HEAL.invoker().onEntityHeal((LivingEntity) (Object) this, amount))

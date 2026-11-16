@@ -31,6 +31,10 @@ public class ${JavaModName} implements ModInitializer {
 
 	public static final String MODID = "${modid}";
 
+	public static final net.fabricmc.fabric.api.attachment.v1.AttachmentType<net.minecraft.nbt.CompoundTag> BLOCK_NBT =
+			net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry.createPersistent(
+					net.minecraft.resources.Identifier.fromNamespaceAndPath(MODID, "block_nbt"), net.minecraft.nbt.CompoundTag.CODEC);
+
 	@Override public void onInitialize() {
 		// Start of user code block mod constructor
 		// End of user code block mod constructor
@@ -57,7 +61,7 @@ public class ${JavaModName} implements ModInitializer {
 		<#if types.guis?has_content>${JavaModName}Menus.load();</#if>
 		<#if types.villagerprofessions?has_content>${JavaModName}VillagerProfessions.load();</#if>
 		<#if types.itemextensions?filter(e -> (e.compostLayerChance gt 0) || e.enableFuel)?size != 0>${JavaModName}ItemExtensions.load();</#if>
-		<#if types.itemextensions?filter(e -> e.hasDispenseBehavior)?size != 0 || types["specialentities"]??>${JavaModName}DispenseBehaviors.load();</#if>
+		<#if types.itemextensions?filter(e -> e.hasDispenseBehavior)?size != 0 || types.specialentities?has_content>${JavaModName}DispenseBehaviors.load();</#if>
 		<#if types.potioneffects?has_content>${JavaModName}MobEffects.load();</#if>
 		<#if types.potions?has_content>${JavaModName}Potions.load();</#if>
 		<#if types.gamerules?has_content>${JavaModName}GameRules.load();</#if>

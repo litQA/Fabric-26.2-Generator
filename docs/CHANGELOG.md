@@ -1,8 +1,42 @@
 # Changelog
 
+## 2026.3-2.11.3
+
+### New Content
+
+- Added all 13 block-inventory procedures (`get_item`, `get_amount`, slot count and limit, insert, extract, clear, set, remove, damage, and result variants) for vanilla `Container` block entities on Fabric.
+- Added entity, item and block NBT procedures for numbers, logic, text and item stacks. Entity and item data use 26.2 data components; block data uses a Fabric data attachment.
+- Added the `player_useitem_finish` trigger and a living-entity finish-use event.
+- Added entity item-stack NBT helpers and a persistent `BLOCK_NBT` attachment to generated mods.
+
+### Fixes
+
+- Replaced private Minecraft 26.2 `Items.registerItem` calls with public registry registration and `Item.Properties.setId`.
+- Fixed `Models` and `DispenseBehaviors` being referenced when their element types were empty.
+- Fixed block-inventory procedure blocks that generated empty expressions (`sn = ;`, `if ( == ...)`, `slotNum = ;`).
+- Fixed entity and block NBT procedure blocks that generated empty or unsupported expressions.
+- Fixed the block NBT attachment reference to use the generated mod class name directly.
+- Added the missing `player_useitem_finish` procedure so existing workspaces no longer reference an ungenerated class.
+- Verified the fixes against the Everrose, Melon and Croparium workspaces.
+
+### Validation
+
+- Parsed 1,721 generator templates with zero Freemarker failures.
+- MCreator `GeneratorsTest` passed for `fabric-26.2`.
+- Everrose, Melon and Croparium regenerated and built successfully with Gradle 9.8 and Java 25.
+- A synthetic procedure covering entity, item and block NBT getters/setters compiled successfully.
+
+### Known Limitations
+
+- NeoForge capability procedures other than vanilla-container block inventory (energy, fluids and general item-handler capabilities) are not available on Fabric.
+- Fabric has no NeoForge-style global loot modifier registry.
+- The armor piglin-neutral mixin behavior remains disabled; tag-based piglin-loved behavior is retained.
+- The client has not been launched in a real Minecraft 26.2 instance; runtime behavior still needs real-machine verification.
+- A third-party Forge Config API Port plugin can add its own procedure blocks; its standalone `stringlist_iterator` test block is not valid outside its foreach block and is not part of this generator.
+
 ## 2026.3-2.11.2.2-beta
 
-## New Content
+### New Content
 
 - Added the Fabric generator for Minecraft 26.2 with plugin id `generator-fabric-26.2`.
 - Added embedded private datapack and Forge-template bases so the generator is self-contained.
@@ -11,7 +45,7 @@
 - Added the `item_is_piglin_currency` procedure block with a 26.2-compatible implementation.
 - Added the `vector_cross` procedure block for 26.2 `Vec3.cross`.
 
-## Changes
+### Changes
 
 - Target metadata updated to MCreator 2026.3.44621, Minecraft 26.2, Fabric Loader 0.20.1 and Fabric API 0.160.0+26.2.
 - Gradle workspace updated to Gradle 9.9.1, Java 25 and Loom 1.19-SNAPSHOT.
@@ -25,7 +59,7 @@
 - Mixin `defaultRequire` is 0; individual injections use `require = 0`.
 - The generated workspace wrapper uses the public Gradle 9.9.1 HTTPS distribution.
 
-## Fixes
+### Fixes
 
 - Fixed 26.3-only feature interfaces and mappings, including `FeaturePlaceContext`, `TreeGrower` and configured-feature JSON.
 - Fixed 26.2 biome registration and surface-rule calls.
@@ -34,7 +68,7 @@
 - Replaced removed Fabric API events with `BlockEvents.USE_ITEM_ON` and `ItemEvents.USE_ON` alternatives.
 - Fixed block/item/entity identifiers that do not exist in 26.2.
 
-## Known Limitations
+### Known Limitations
 
 - NeoForge capability procedures (energy, fluid tanks, item handlers and capability-based block inventories) are not available in this Fabric generator.
 - Fabric has no NeoForge-style global loot modifier registry; the custom-loot-table-as-loot-modifier feature is not implemented.

@@ -60,6 +60,7 @@ public class LivingEntityEvents {
 	});
 
 	public static final Event<StartUseItem> START_USE_ITEM = EventFactory.createArrayBacked(StartUseItem.class, (callbacks) -> (entity, itemstack) -> Arrays.stream(callbacks).forEach(callback -> callback.onStartUseItem(entity, itemstack)));
+	public static final Event<FinishUseItem> FINISH_USE_ITEM = EventFactory.createArrayBacked(FinishUseItem.class, (callbacks) -> (entity, itemstack, duration) -> Arrays.stream(callbacks).forEach(callback -> callback.onFinishUseItem(entity, itemstack, duration)));
 	public static final Event<EntityPickupItem> ENTITY_PICKUP_ITEM = EventFactory.createArrayBacked(EntityPickupItem.class, (callbacks) -> (entity, itemstack) -> Arrays.stream(callbacks).forEach(callback -> callback.onEntityPickupItem(entity, itemstack)));
     public static final Event<EntityJump> ENTITY_JUMP = EventFactory.createArrayBacked(EntityJump.class, (callbacks) -> (entity) -> Arrays.stream(callbacks).forEach(callback -> callback.onEntityJump(entity)));
 	public static final Event<EntityStopUsingItem> ENTITY_STOP_USING_ITEM = EventFactory.createArrayBacked(EntityStopUsingItem.class, (callbacks) -> (entity, itemstack, duration) -> Arrays.stream(callbacks).forEach(callback -> callback.onStopUsingItem(entity, itemstack, duration)));
@@ -68,6 +69,11 @@ public class LivingEntityEvents {
 	@FunctionalInterface
 	public interface StartUseItem {
 		void onStartUseItem(Entity entity, ItemStack itemstack);
+	}
+
+	@FunctionalInterface
+	public interface FinishUseItem {
+		void onFinishUseItem(Entity entity, ItemStack itemstack, int duration);
 	}
 
 	@FunctionalInterface

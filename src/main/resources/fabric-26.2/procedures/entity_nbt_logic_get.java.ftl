@@ -1,0 +1,1 @@
+(${input$entity}.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA) != null ? ${input$entity}.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA).copyTag().getBooleanOr(${input$tagName}, false) : false)

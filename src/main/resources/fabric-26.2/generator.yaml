@@ -93,6 +93,9 @@ base_templates:
     condition_any:
       - hasJavaModels()
       - "${types.specialentities?has_content}"
+  - template: elementinits/dispensebehaviors.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+    condition: "${types.itemextensions?filter(e -> e.hasDispenseBehavior)?size != 0 || types.specialentities?has_content}"
   - template: modbase/mixin.json.ftl
     writer: json
     name: "@RESROOT/@modid.mixins.json"

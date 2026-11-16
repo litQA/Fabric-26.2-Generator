@@ -4,6 +4,8 @@
 
 Fabric generator plugin for MCreator 2026.3, targeting Minecraft 26.2.
 
+Current version: `2026.3-2.11.3`.
+
 ## Target
 
 - MCreator: 2026.3.44621
@@ -16,10 +18,10 @@ Fabric generator plugin for MCreator 2026.3, targeting Minecraft 26.2.
 ## Build
 
 ```powershell
-..\caches\gradle-9.9.1\gradle-9.9.1\bin\gradle.bat --no-daemon --offline clean build
+..\caches\gradle-9.9.1\gradle-9.9.1\bin\gradle.bat --no-daemon clean build
 ```
 
-The plugin archive is written to `build/libs/generator-fabric-26.2.zip`.
+The first build downloads the Gradle and Loom dependencies. The plugin archive is written to `build/libs/generator-fabric-26.2.zip`.
 
 When the bundled MCreator application is present at `../apps/MCreatorEAP2026344621`, the build also copies the archive into its `plugins` folder.
 
