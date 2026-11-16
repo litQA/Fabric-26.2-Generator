@@ -7,7 +7,6 @@
     "version": "${pluginVersion}",
     "description": "Fabric generator for Minecraft 26.2",
     "author": "LitQA",
-    "credits": "Thanks to Goldorion, NerdyPuzzle and Spectrall for the original Fabric generator, and to Moegirl Deepseek for assistance. Based on the official Fabric-Generator-MCreator project.",
-    "pluginPageID": 64512
+    "credits": "Thanks to Goldorion, NerdyPuzzle and Spectrall for the original Fabric generator, and to Moegirl Deepseek for assistance. Based on the official Fabric-Generator-MCreator project."
   }
 }

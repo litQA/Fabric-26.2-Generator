@@ -83,6 +83,25 @@ tasks.register('install') {
     }
 }
 
+def bundledAppPlugins = file("${projectDir}/../apps/MCreatorEAP2026344621/plugins")
+
+tasks.register('installToApp', Copy) {
+    dependsOn jar
+    group("mcreator_plugins")
+    onlyIf { bundledAppPlugins.isDirectory() }
+    from(layout.buildDirectory.dir("libs")) {
+        include Globals.getArchiveName()
+    }
+    into(bundledAppPlugins)
+    doLast {
+        println("Plugin installed to ${bundledAppPlugins}")
+    }
+}
+
+tasks.named('build') {
+    finalizedBy 'installToApp'
+}
+
 static def installPlugin(String path, String separator) {
     File des = new File(path + Globals.getArchiveName())
     File original = new File("${System.getProperty("user.dir")}${separator}build${separator}${Globals.getArchiveName()}")

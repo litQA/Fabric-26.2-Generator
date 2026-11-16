@@ -1,5 +1,7 @@
 # Changelog
 
+## 2026.3-2.11.2.2-beta
+
 ## New Content
 
 - Added the Fabric generator for Minecraft 26.2 with plugin id `generator-fabric-26.2`.
@@ -11,9 +13,13 @@
 
 ## Changes
 
-- Target metadata updated to MCreator 2026.3.41718, Minecraft 26.2, Fabric Loader 0.20.1 and Fabric API 0.160.0+26.2.
+- Target metadata updated to MCreator 2026.3.44621, Minecraft 26.2, Fabric Loader 0.20.1 and Fabric API 0.160.0+26.2.
 - Gradle workspace updated to Gradle 9.9.1, Java 25 and Loom 1.19-SNAPSHOT.
 - Data pack format updated to 107.1.
+- Documentation moved to the `docs/` folder, with a project README added.
+- License changed to CC BY 4.0.
+- Removed the obsolete `pluginPageID` field from `plugin.json`.
+- Added an automatic install step for the bundled MCreator application.
 - Data templates were rebased on the 26.1.2 schema where it matches 26.2, while keeping the 2026.3 element model.
 - Block, item, entity, particle, sound and feature mappings were filtered or rebuilt for 26.2.
 - Mixin `defaultRequire` is 0; individual injections use `require = 0`.

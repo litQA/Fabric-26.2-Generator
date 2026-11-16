@@ -4,7 +4,8 @@
 
 | Item | Value |
 | --- | --- |
-| Target MCreator | 2026.3.41718 |
+| Target MCreator | 2026.3.44621 |
+| Plugin version | 2026.3-2.11.2.2-beta |
 | Target Minecraft | 26.2 |
 | Fabric Loader | 0.20.1 |
 | Fabric API | 0.160.0+26.2 |
@@ -12,6 +13,8 @@
 | Gradle | 9.9.1 |
 | Data pack format | 107.1 |
 | Generator id | generator-fabric-26.2 |
+| Supported MCreator versions | 202600344621–202600399999 |
+| License | CC BY 4.0 |
 
 The element model, procedures, triggers and 2026.3 feature definitions were taken from the official Fabric generator for MCreator 2026.3 (`Fabric-Generator-MCreator-26.3-2026.3-2.10.1`). Data templates and Java templates were rebased on the official Fabric 26.1.2 generator (`Fabric-Generator-MCreator-26.1.2-2026.3-2.8.1`) and the NeoForge 26.1.2 datapack base where the 26.2 schema matches those versions.
 
