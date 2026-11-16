@@ -1,18 +1,35 @@
 # Changelog
 
+## 2026.3-3.0.1.123-beta
+
+### Fixes
+
+- Made right-click block, right-click item, right-click entity, left-click block and bucket-fill triggers server-authoritative. Client-side callbacks now return `PASS` so the server receives and executes the interaction; previously a client-side `FAIL` suppressed the packet and could consume items without running server-side effects.
+- Fixed block-bound GUI button packets being sent with the player's coordinates instead of the block position. Block-coordinate menus now synchronise their `x`, `y` and `z` values through data slots, so the server handles button actions against the correct block entity.
+- Added GUI `containerTick()` generation for block-coordinate menus even when no button display condition is configured.
+
+### Validation
+
+- Parsed 1,721 generator templates with zero Freemarker failures.
+- MCreator `GeneratorsTest` passed for `fabric-26.2`, including element, procedure, trigger, feature, enchantment, AI and JSON coverage.
+- Regenerated three test workspaces with the updated generator.
+- All three built successfully with Gradle 9.8 and Java 25; one also passed the third-party Procedure Renamer post-process.
+- Generated test code contains the client guard, the GUI `cancel_event` path and synchronised block-menu coordinates.
+- Interactive GUI and item-output behaviour still needs confirmation in a Minecraft 26.2 client.
+
 ## 2026.3-2.11.4
 
 ### Fixes
 
-- Updated the block place and multi-place triggers to use Fabric's `BLOCK_PLACE` and `BLOCK_MULTIPLACE` callbacks. This removes the invalid `BlockEvents.USE_ITEM_ON` reference that broke Croparium's `BlockPlacedBusProcedure`.
+- Updated the block place and multi-place triggers to use Fabric's `BLOCK_PLACE` and `BLOCK_MULTIPLACE` callbacks. This removes the invalid `BlockEvents.USE_ITEM_ON` reference that broke a test workspace's block-placement procedure.
 - Updated the equipment layer mixin to use the texture returned by `getArmorTexture(...)`, so a custom armor model texture is no longer replaced by the equipment JSON texture.
 
 ### Validation
 
 - Parsed 1,721 generator templates with zero Freemarker failures.
 - MCreator `GeneratorsTest` passed for `fabric-26.2`.
-- Everrose, Melon and Croparium regenerated and built successfully with Gradle 9.8 and Java 25 after the trigger and armor texture fixes.
-- The Melon workspace starts its Fabric client; the corrected helmet texture still needs final in-game visual confirmation.
+- Three test workspaces regenerated and built successfully with Gradle 9.8 and Java 25 after the trigger and armor texture fixes.
+- One generated test client starts successfully; the corrected custom armor texture still needs final in-game visual confirmation.
 
 ## 2026.3-2.11.3
 
@@ -31,13 +48,13 @@
 - Fixed entity and block NBT procedure blocks that generated empty or unsupported expressions.
 - Fixed the block NBT attachment reference to use the generated mod class name directly.
 - Added the missing `player_useitem_finish` procedure so existing workspaces no longer reference an ungenerated class.
-- Verified the fixes against the Everrose, Melon and Croparium workspaces.
+- Verified the fixes against three test workspaces.
 
 ### Validation
 
 - Parsed 1,721 generator templates with zero Freemarker failures.
 - MCreator `GeneratorsTest` passed for `fabric-26.2`.
-- Everrose, Melon and Croparium regenerated and built successfully with Gradle 9.8 and Java 25.
+- Three test workspaces regenerated and built successfully with Gradle 9.8 and Java 25.
 - A synthetic procedure covering entity, item and block NBT getters/setters compiled successfully.
 
 ### Known Limitations
@@ -45,7 +62,7 @@
 - NeoForge capability procedures other than vanilla-container block inventory (energy, fluids and general item-handler capabilities) are not available on Fabric.
 - Fabric has no NeoForge-style global loot modifier registry.
 - The armor piglin-neutral mixin behavior remains disabled; tag-based piglin-loved behavior is retained.
-- The client has not been launched in a real Minecraft 26.2 instance; runtime behavior still needs real-machine verification.
+- Not every client/runtime path has been exercised; behavior beyond generated output still needs real-machine verification.
 - A third-party Forge Config API Port plugin can add its own procedure blocks; its standalone `stringlist_iterator` test block is not valid outside its foreach block and is not part of this generator.
 
 ## 2026.3-2.11.2.2-beta
@@ -88,4 +105,4 @@
 - Fabric has no NeoForge-style global loot modifier registry; the custom-loot-table-as-loot-modifier feature is not implemented.
 - The armor piglin-neutral mixin behavior is disabled because 26.2 does not expose the needed item override; the item tag-based piglin-loved behavior is retained.
 - Some 26.2 procedure and trigger blocks require real-machine verification in MCreator; the automated sample workspace does not exercise every block.
-- The generated sample workspace was compiled and built, but the client has not yet been launched in a real Minecraft 26.2 instance.
+- The generated sample workspace was compiled and built; full client behavior is not covered by that automated sample.

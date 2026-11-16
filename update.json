@@ -1,11 +1,17 @@
 {
   "generator-fabric-26.2": {
-    "latest": "2026.3-2.11.4",
+    "latest": "2026.3-3.0.1.123-beta",
     "changes": [
+      "2026.3-3.0.1.123-beta",
+      "Fixed client-side interaction cancellation that prevented server-side right-click effects and item output",
+      "Fixed block GUI button packets using player coordinates instead of block coordinates",
+      "Added server-authoritative guards to right-click block/item/entity, left-click block and bucket-fill triggers",
+      "Synchronised block-bound GUI coordinates through menu data slots",
+      "Revalidated three test workspaces",
       "2026.3-2.11.4",
       "Fixed block place and multi-place triggers to use the Fabric BLOCK_PLACE and BLOCK_MULTIPLACE events",
       "Fixed custom armor model textures being ignored in favor of the equipment layer texture",
-      "Revalidated the Everrose, Melon and Croparium workspaces with the updated templates",
+      "Revalidated three test workspaces with the updated templates",
       "2026.3-2.11.3",
       "Fixed item registration against the Minecraft 26.2 registry API",
       "Fixed spurious Models and DispenseBehaviors class references",
@@ -13,7 +19,7 @@
       "Added Fabric block-inventory procedure blocks backed by vanilla containers",
       "Added entity, item and block NBT procedure blocks for Minecraft 26.2",
       "Fixed empty expressions generated for block-inventory and NBT procedures",
-      "Validated real MCreator workspaces: Everrose, Melon and Croparium now compile",
+      "Validated three MCreator test workspaces: all compile",
       "Uses Fabric Loader 0.20.1 and Fabric API 0.160.0+26.2",
       "Adapted 2026.3 element, procedure and trigger support to the Minecraft 26.2 API",
       "Updated target MCreator version to 2026.3.44621"

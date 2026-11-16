@@ -32,8 +32,9 @@ package ${package}.client.gui;
 <@javacompress>
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implements ${JavaModName}Screens.FabricScreenAccessor {
 
+	private final ${name}Menu container;
 	private final Level world;
-	private final int x, y, z;
+	private int x, y, z;
 	private final Player entity;
 
 	private boolean menuStateUpdateActive = false;
@@ -72,6 +73,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
 		super(container, inventory, text, ${data.width}, ${data.height});
+		this.container = container;
 		this.world = container.world;
 		this.x = container.x;
 		this.y = container.y;
@@ -334,10 +336,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		</#list>
 	}
 
-	<#if buttons?filter(component -> hasProcedure(component.displayCondition))?size != 0
+	<#if data.type == 1
+		|| buttons?filter(component -> hasProcedure(component.displayCondition))?size != 0
 		|| imageButtons?filter(component -> hasProcedure(component.displayCondition))?size != 0>
 	@Override protected void containerTick() {
 		super.containerTick();
+
+		<#if data.type == 1>
+		<#-- The client receives the block position through menu data slots; use the synced values for button packets. -->
+		this.x = this.container.x;
+		this.y = this.container.y;
+		this.z = this.container.z;
+		</#if>
 
 		<#list buttons as component>
 			<#if hasProcedure(component.displayCondition)>

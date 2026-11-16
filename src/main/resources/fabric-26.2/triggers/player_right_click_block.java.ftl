@@ -1,6 +1,10 @@
 <#include "procedures.java.ftl">
 public ${name}Procedure() {
 	UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+		// UseBlockCallback also runs on the client. Executing here can consume items or
+		// suppress the packet before the server sees the interaction, so let the server decide.
+		if (level.isClientSide())
+			return InteractionResult.PASS;
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "hitResult.getBlockPos().getX()",

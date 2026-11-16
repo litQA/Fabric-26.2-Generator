@@ -6,7 +6,7 @@
 | --- | --- |
 | Baseline MCreator | 2026.3 (Fabric-Generator-MCreator-26.3-2026.3-2.10.1) |
 | Target MCreator | 2026.3.44621 |
-| Plugin version | 2026.3-2.11.4 |
+| Plugin version | 2026.3-3.0.1.123-beta |
 | Target Minecraft | 26.2 |
 | Fabric Loader | 0.20.1 |
 | Fabric API | 0.160.0+26.2 |
@@ -58,6 +58,8 @@ Because the upstream Fabric 2026.3 generator already targets the same MCreator l
 | 2026.2 armor trims | Supported | 26.2 trim atlas path restored. |
 | Custom armor model textures | Supported | The equipment layer mixin substitutes the identifier from `getArmorTexture(...)` before rendering. |
 | Block place and multi-place triggers | Supported | Use Fabric `BLOCK_PLACE`/`BLOCK_MULTIPLACE` with `(position, entity, placed, placedAgainst)` callbacks. |
+| Player interaction triggers | Supported | Right-click block/item/entity, left-click block and bucket-fill triggers execute on the server only; clients return `PASS` so Fabric forwards the interaction packet. |
+| Block GUI button coordinates | Supported | Block-bound menus synchronise `x`/`y`/`z` through data slots so GUI button packets target the correct block entity on the server. |
 | 2026.2 skybox/sun/moon | Supported | 26.2 render-pass API used. |
 | 2026.2 block inventory insert/extract | Supported for vanilla containers | 13 procedure templates cover slot access, count, insert, extract, clear, remove, set, damage and result variants through `Container`/`BlockEntity`; NeoForge item-handler capabilities remain unavailable. |
 | Entity, item and block NBT | Supported | Entity/item values use `DataComponents.CUSTOM_DATA`; block values use a persistent Fabric data attachment. Number, logic, text and item-stack variants are covered. |
@@ -80,13 +82,13 @@ Because the upstream Fabric 2026.3 generator already targets the same MCreator l
 - Plugin ZIP builds successfully with Gradle 9.8.0 and Gradle 9.9.1 under Java 25.
 - Freemarker parsing: 1,721 templates, 0 failures.
 - MCreator `GeneratorsTest` passes for `fabric-26.2`, including element, procedure, trigger, feature, enchantment, AI and JSON coverage.
-- Three real MCreator workspaces were regenerated and built with Gradle 9.8.0 and Java 25 after the trigger and armor texture fixes:
-  - Everrose: 177 elements, build passed (15 s).
-  - Melon: 430 elements, build passed (27 s).
-  - Croparium: 493 elements, build passed (36 s), including the third-party Procedure Renamer post-process.
+- Three test workspaces were regenerated and built with Gradle 9.8.0 and Java 25 after the trigger, GUI and armor texture fixes.
+  - All three compiled successfully.
+  - One workspace also passed the third-party Procedure Renamer post-process.
+- Generated test code contains the server-side interaction guard, GUI `cancel_event` path and synchronised block-menu coordinates. Block-screen actions and item output now use server-authoritative positions.
 - A synthetic procedure covering entity, item and block NBT number/logic/text/item-stack getters and setters compiled successfully.
 - The generated sample workspace used for the isolated generator test compiles and builds. When the third-party Forge Config API Port plugin is also loaded, its standalone `stringlist_iterator` test block is not valid outside the plugin's foreach block; this is a third-party test artifact, not a Fabric generator failure.
-- The Melon client was launched by the user against Minecraft 26.2. The corrected custom armor texture path and mixin substitution were verified in generated source and against decompiled 26.2 client classes; final in-game visual confirmation is still pending.
+- A generated test client was launched against Minecraft 26.2. The corrected custom armor texture path and mixin substitution were verified in generated source and against decompiled 26.2 client classes; final in-game visual confirmation is still pending.
 - Texture-reference validation is not automated because the isolated test environment has no vanilla texture cache.
 
 ## Known Limitations
@@ -96,6 +98,7 @@ Because the upstream Fabric 2026.3 generator already targets the same MCreator l
 - Custom loot tables cannot be injected as NeoForge-style global loot modifiers on Fabric.
 - The piglin-neutral armor mixin behavior is disabled because the required 26.2 item override is absent. Normal `minecraft:piglin_loved` item tagging remains available for the item piglin-currency option.
 - Third-party MCreator plugins (for example Forge Config API Port and Procedure Renamer) provide their own element types and procedure blocks. Their behavior is outside this generator; installed plugins must match the target MCreator line.
-- Some procedure/trigger blocks compile but are not covered by the real workspaces and need real-machine testing.
-- The custom armor texture fix is structurally verified but still requires visual confirmation on the user's client.
+- Some procedure/trigger blocks compile but are not covered by the test workspaces and need real-machine testing.
+- The custom armor texture fix is structurally verified but still requires visual confirmation in a real client.
+- The server-authoritative interaction triggers and block-menu coordinate sync compile and are verified in generated source; interactive block-GUI behaviour still needs confirmation in a Minecraft 26.2 client.
 - Only Minecraft 26.2 is supported. The same generator must not be used for 26.1.2 or 26.3 workspaces.

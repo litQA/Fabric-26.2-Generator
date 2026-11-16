@@ -4,7 +4,7 @@
 
 Fabric generator plugin for MCreator 2026.3, targeting Minecraft 26.2.
 
-Current version: `2026.3-2.11.4`.
+Current version: `2026.3-3.0.1.123-beta`.
 
 ## Target
 

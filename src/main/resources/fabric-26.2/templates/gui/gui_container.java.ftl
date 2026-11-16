@@ -204,6 +204,22 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		<#if hasProcedure(data.onOpen)>
 			<@procedureOBJToCode data.onOpen/>
 		</#if>
+
+		<#if data.type == 1>
+			<#-- Vanilla MenuType does not pass the block position to the client; sync it so GUI button packets target the right block. -->
+			this.addDataSlot(new net.minecraft.world.inventory.DataSlot() {
+				@Override public int get() { return ${name}Menu.this.x; }
+				@Override public void set(int value) { ${name}Menu.this.x = value; }
+			});
+			this.addDataSlot(new net.minecraft.world.inventory.DataSlot() {
+				@Override public int get() { return ${name}Menu.this.y; }
+				@Override public void set(int value) { ${name}Menu.this.y = value; }
+			});
+			this.addDataSlot(new net.minecraft.world.inventory.DataSlot() {
+				@Override public int get() { return ${name}Menu.this.z; }
+				@Override public void set(int value) { ${name}Menu.this.z = value; }
+			});
+		</#if>
 	}
 
 	@Override public boolean stillValid(Player player) {
