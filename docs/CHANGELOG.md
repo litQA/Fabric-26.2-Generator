@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026.3-2.11.4
+
+### Fixes
+
+- Updated the block place and multi-place triggers to use Fabric's `BLOCK_PLACE` and `BLOCK_MULTIPLACE` callbacks. This removes the invalid `BlockEvents.USE_ITEM_ON` reference that broke Croparium's `BlockPlacedBusProcedure`.
+- Updated the equipment layer mixin to use the texture returned by `getArmorTexture(...)`, so a custom armor model texture is no longer replaced by the equipment JSON texture.
+
+### Validation
+
+- Parsed 1,721 generator templates with zero Freemarker failures.
+- MCreator `GeneratorsTest` passed for `fabric-26.2`.
+- Everrose, Melon and Croparium regenerated and built successfully with Gradle 9.8 and Java 25 after the trigger and armor texture fixes.
+- The Melon workspace starts its Fabric client; the corrected helmet texture still needs final in-game visual confirmation.
+
 ## 2026.3-2.11.3
 
 ### New Content

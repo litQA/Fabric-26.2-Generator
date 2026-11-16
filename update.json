@@ -1,7 +1,11 @@
 {
   "generator-fabric-26.2": {
-    "latest": "2026.3-2.11.3",
+    "latest": "2026.3-2.11.4",
     "changes": [
+      "2026.3-2.11.4",
+      "Fixed block place and multi-place triggers to use the Fabric BLOCK_PLACE and BLOCK_MULTIPLACE events",
+      "Fixed custom armor model textures being ignored in favor of the equipment layer texture",
+      "Revalidated the Everrose, Melon and Croparium workspaces with the updated templates",
       "2026.3-2.11.3",
       "Fixed item registration against the Minecraft 26.2 registry API",
       "Fixed spurious Models and DispenseBehaviors class references",

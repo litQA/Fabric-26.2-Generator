@@ -48,6 +48,9 @@ public abstract class EquipmentLayerRendererMixin {
 			int color = ((EquipmentLayerRenderer)(Object)this).getColorForLayer(layer, dyeColor);
 			if (color != 0) {
 				Identifier layerTexture = layer.usePlayerTexture() && playerTextureOverride != null ? playerTextureOverride : this.layerTextureLookup.apply(new EquipmentLayerRenderer.LayerTextureKey(layerType, layer));
+				Identifier customTexture = armorModel.getArmorTexture(itemStack, layerType, layer, layerTexture);
+				if (customTexture != null)
+					layerTexture = customTexture;
 				submitNodeCollector.order(nextOrder++).submitModel(model, state, poseStack, RenderTypes.armorCutoutNoCull(layerTexture), lightCoords, OverlayTexture.NO_OVERLAY, color, null, outlineColor, null);
 				if (renderFoil) {
 					submitNodeCollector.order(nextOrder++).submitModel(model, state, poseStack, RenderTypes.armorEntityGlint(), lightCoords, OverlayTexture.NO_OVERLAY, color, null, outlineColor, null);

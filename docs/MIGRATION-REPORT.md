@@ -6,7 +6,7 @@
 | --- | --- |
 | Baseline MCreator | 2026.3 (Fabric-Generator-MCreator-26.3-2026.3-2.10.1) |
 | Target MCreator | 2026.3.44621 |
-| Plugin version | 2026.3-2.11.3 |
+| Plugin version | 2026.3-2.11.4 |
 | Target Minecraft | 26.2 |
 | Fabric Loader | 0.20.1 |
 | Fabric API | 0.160.0+26.2 |
@@ -56,6 +56,8 @@ Because the upstream Fabric 2026.3 generator already targets the same MCreator l
 | Dry foliage color/tint | Supported | Biome template and block/plant/fluid tint paths retained. |
 | 2026.2 advancement trigger setup | Supported | 2026.3 advancement definitions/templates retained. |
 | 2026.2 armor trims | Supported | 26.2 trim atlas path restored. |
+| Custom armor model textures | Supported | The equipment layer mixin substitutes the identifier from `getArmorTexture(...)` before rendering. |
+| Block place and multi-place triggers | Supported | Use Fabric `BLOCK_PLACE`/`BLOCK_MULTIPLACE` with `(position, entity, placed, placedAgainst)` callbacks. |
 | 2026.2 skybox/sun/moon | Supported | 26.2 render-pass API used. |
 | 2026.2 block inventory insert/extract | Supported for vanilla containers | 13 procedure templates cover slot access, count, insert, extract, clear, remove, set, damage and result variants through `Container`/`BlockEntity`; NeoForge item-handler capabilities remain unavailable. |
 | Entity, item and block NBT | Supported | Entity/item values use `DataComponents.CUSTOM_DATA`; block values use a persistent Fabric data attachment. Number, logic, text and item-stack variants are covered. |
@@ -70,7 +72,7 @@ Because the upstream Fabric 2026.3 generator already targets the same MCreator l
 - 26.3 `material_rule`, `context_int_provider` and `recipe/brewing` data/templates were removed because 26.2 has no corresponding registries or recipe type.
 - Feature mappings were changed from 26.3 scalar values to 26.1.2 three-field class/configuration/id lists.
 - Block/item/entity/particle/sound mappings that referenced 26.3-only identifiers were filtered for 26.2.
-- 26.3-only item/block mixins used by the removed trigger events were deleted; the affected triggers use Fabric `USE_ITEM_ON` and `USE_ON` events instead.
+- 26.3-only item/block mixins used by the removed trigger events were deleted; the affected triggers use Fabric's block placement events or the generator's event facades instead.
 - Mixin injection points that no longer exist in 26.2 were updated or removed. Remaining injections use `require = 0`.
 
 ## Verification
@@ -78,14 +80,14 @@ Because the upstream Fabric 2026.3 generator already targets the same MCreator l
 - Plugin ZIP builds successfully with Gradle 9.8.0 and Gradle 9.9.1 under Java 25.
 - Freemarker parsing: 1,721 templates, 0 failures.
 - MCreator `GeneratorsTest` passes for `fabric-26.2`, including element, procedure, trigger, feature, enchantment, AI and JSON coverage.
-- Three real MCreator workspaces were regenerated and built with Gradle 9.8.0 and Java 25:
-  - Everrose: 177 elements, build passed.
-  - Melon: 430 elements, build passed.
-  - Croparium: 493 elements, build passed, including the third-party Procedure Renamer post-process.
+- Three real MCreator workspaces were regenerated and built with Gradle 9.8.0 and Java 25 after the trigger and armor texture fixes:
+  - Everrose: 177 elements, build passed (15 s).
+  - Melon: 430 elements, build passed (27 s).
+  - Croparium: 493 elements, build passed (36 s), including the third-party Procedure Renamer post-process.
 - A synthetic procedure covering entity, item and block NBT number/logic/text/item-stack getters and setters compiled successfully.
 - The generated sample workspace used for the isolated generator test compiles and builds. When the third-party Forge Config API Port plugin is also loaded, its standalone `stringlist_iterator` test block is not valid outside the plugin's foreach block; this is a third-party test artifact, not a Fabric generator failure.
-- The client has not yet been launched against a real Minecraft 26.2 instance.
-- Texture-reference validation was skipped in the isolated test environment because it has no vanilla texture cache; this does not indicate a generator failure.
+- The Melon client was launched by the user against Minecraft 26.2. The corrected custom armor texture path and mixin substitution were verified in generated source and against decompiled 26.2 client classes; final in-game visual confirmation is still pending.
+- Texture-reference validation is not automated because the isolated test environment has no vanilla texture cache.
 
 ## Known Limitations
 
@@ -95,4 +97,5 @@ Because the upstream Fabric 2026.3 generator already targets the same MCreator l
 - The piglin-neutral armor mixin behavior is disabled because the required 26.2 item override is absent. Normal `minecraft:piglin_loved` item tagging remains available for the item piglin-currency option.
 - Third-party MCreator plugins (for example Forge Config API Port and Procedure Renamer) provide their own element types and procedure blocks. Their behavior is outside this generator; installed plugins must match the target MCreator line.
 - Some procedure/trigger blocks compile but are not covered by the real workspaces and need real-machine testing.
+- The custom armor texture fix is structurally verified but still requires visual confirmation on the user's client.
 - Only Minecraft 26.2 is supported. The same generator must not be used for 26.1.2 or 26.3 workspaces.
